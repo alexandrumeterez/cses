@@ -1,28 +1,28 @@
 #include <iostream>
 #include <algorithm>
 #include <vector>
+#include <cmath>
 
 using namespace std;
 typedef long long ll;
 
-int count_powers(long x) {
-    int c = 0;
-    while (x % 5 == 0) {
-        x = x / 5;
-        c++;
-    }
-    return c;
-}
+// count multiples of 5, 25, 125 etc
+// powers of 5
 
 int main(void) {
-    long n;
+    long long n;
     cin >> n;
 
-    long ans = 0;
-    for (int i = 5; i <= n; i+=5) {
-        ans += count_powers(i);
-    }
-    cout << ans << endl;
+    long long ans = 0;
+    long long count = -1;
 
+    long long i = 5;
+    while (count != 0) {
+        count = floor(n / i);
+        ans += count;
+        i *= 5;
+    }
+    // log_5 n 
+    cout << ans;
 	return 0;
 }

@@ -4,37 +4,39 @@
 
 using namespace std;
 typedef long long ll;
-
-void solve(long a, long b) {
-    if (abs(a-b) > a || abs(a-b) > b) {
-        cout << "NO" << endl;;
-        return;
-    }
-
-    long d = abs(a - b);
-    if (a > b) {
-        a = a - 2 * d;
-        b = b - d;
-    } else {
-        a = a - d;
-        b = b - 2 * d;
-    }
-
-    if (a % 3 == 0 && b % 3 == 0) {
-        cout<< "YES" << endl;
-    } else {
-        cout << "NO" << endl;
-    }
-}
+// 7 7 : 5 6 : 4 4 : 2 3 : 1 1
+// 8 8 : 6 7 : 5 5 : 3 4 : 2 2
+// 9 9 : 7 8 : 6 6 : 4 5 : 3 3
+// 6 6 : 4 5 : 3 3
+// 5 3 : 3 2 : 1 1
 
 int main(void) {
-    long t;
+    int t;
     cin >> t;
 
-    while(t--) {
-        long a, b;
+    while (t--) {
+        int a, b;
         cin >> a >> b;
-        solve(a, b);
+
+        int diff = abs(a - b);
+        if (a > b) {
+            a = a - 2 * diff;
+            b = b - diff;
+        } else {
+            a = a - diff;
+            b = b - 2 * diff;
+        }
+        if (a < 0 || b < 0) {
+            cout << "NO\n";
+            continue;
+        }
+
+        if (a % 3 == 0 && b % 3 == 0) {
+            cout << "YES\n";
+            continue;
+        } else {
+            cout << "NO\n";
+        }
     }
 	return 0;
 }

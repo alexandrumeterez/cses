@@ -2,42 +2,52 @@
 #include <algorithm>
 #include <vector>
 #include <unordered_map>
+#include <set>
 
 using namespace std;
 typedef long long ll;
 
-void solve(unordered_map<char, int> count, int total_length, string curr, vector<string> &ans) {
-    if (curr.size() == total_length) {
-        ans.push_back(curr);
+// void generate(string s, set<int> marked, string& current, set<string>& ans) {
+//     if (current.size() == s.size()) {
+//         ans.insert(current);
+//         return;
+//     }
+
+//     for (int i = 0; i < s.size(); ++i) {
+//         if (marked.count(i)) continue;
+//         current.push_back(s[i]);
+//         marked.insert(i);
+//         generate(s, marked, current, ans);
+//         current.pop_back();
+//         marked.erase(i);
+//     }
+// }
+
+void generate(string s, int index, string& current, vector<string>& ans) {
+    if (index == s.size()) {
+        ans.push_back(current);
         return;
     }
 
-    for(char c = 'a'; c <= 'z'; ++c) {
-        if(count[c] > 0) {
-            count[c]-=1;
-            curr += string(1, c);
-            solve(count, total_length, curr, ans);
-            count[c] += 1;
-            curr.pop_back();
-        }
-    }
+    current.push_back(s[index]);
+    generate(s, index + 1, current, ans);
+    current.pop_back();
+    generate(s, index + 1, current, ans);
 }
 
 int main(void) {
     string s;
     cin >> s;
-    int total_length = 0;
-    unordered_map<char, int> count;
-    for(char c: s) {
-        count[c]++;
-        total_length++;
-    }
-    vector<string> ans;
-    solve(count, total_length, "", ans);
 
+    sort(s.begin(), s.end());
+    string current;
+    vector<string> ans;
+    vector<int> marked(s.size());
+    generate(s, 0, marked, current, ans);
     cout << ans.size() << endl;
-    for (auto s : ans) {
-        cout << s << endl;
+
+    for(auto ss: ans) {
+        cout << ss << endl;
     }
 	return 0;
 }

@@ -1,28 +1,41 @@
 #include <iostream>
 #include <algorithm>
 #include <vector>
+#include <set>
 
 using namespace std;
 typedef long long ll;
 
-void solve(vector<long> weights, int index, long s1, long s2, long &answer) {
-    if (index == weights.size()) {
-        answer = min(answer, abs(s1 - s2));
+void solve(vector<int> used, int index, vector<int> p, long long totalsum, long long currsum, long long& answer) {
+    if (index == p.size()) {
+        answer = min(answer, abs(totalsum - 2*currsum));
         return;
     }
 
-    solve(weights, index + 1, s1 + weights[index], s2, answer);
-    solve(weights, index + 1, s1, s2 + weights[index], answer);
-}
-int main(void) {
-    long n;
-    cin >> n;
-    vector<long> nums(n);
-    for (int i = 0; i < n; ++i) {
-        cin >> nums[i];
+    if (!used[index]) {
+        used[index] = 1;
+        solve(used, index + 1, p, totalsum, currsum + p[index], answer);
+        used[index] = 0;
     }
-    long answer = 10000000000;
-    solve(nums, 0, 0, 0, answer);
+
+    solve(used, index + 1, p, totalsum, currsum, answer); 
+}
+
+int main(void) {
+    int n;
+    cin >> n;
+
+    vector<int> p(n);
+    vector<int> used(n);
+    long long total_sum = 0;
+    for(int i = 0; i < n; ++i) {
+        cin >> p[i];
+        total_sum += p[i];
+    }
+
+    long long answer = 10000000001;
+    vector<int> g1;
+    solve(used, 0, p, total_sum, 0, answer);
     cout << answer;
 	return 0;
 }
